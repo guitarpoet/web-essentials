@@ -1,4 +1,4 @@
-import Application from "./application"
+import Application from "./app"
 // For Ajax requests
 import axios from "axios"
 import { property, template } from "./core"
