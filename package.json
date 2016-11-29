@@ -1,0 +1,81 @@
+{
+  "name": "web-essentials",
+  "version": "0.0.1",
+  "description": "The essential functions for React and Redux based web app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guitarpoet/web-essentials.git"
+  },
+  "keywords": [
+    "web",
+    "react",
+    "redux",
+    "utils"
+  ],
+  "author": "Jack <jack@thinkingcloud.info>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guitarpoet/web-essentials/issues"
+  },
+  "dependencies": {
+    "axios": "^0.12.0",
+    "babel-polyfill": "^6.9.1",
+    "date-format": "*",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "han-css": "*",
+    "handlebars": "^4.0.5",
+    "howler": "^2.0.0",
+    "js-yaml": "^3.6.1",
+    "md5": "^2.1.0",
+    "moment": "^2.14.1",
+    "oatmeal-cookie": "0.0.1",
+    "pako": "^1.0.3",
+    "react": "^15.1.0",
+    "react-bsod": "^1.0.1",
+    "react-dom": "^15.1.0",
+    "react-intl": "^2.1.3",
+    "react-jsonschema-form": "^0.40.0",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.5.1",
+    "react-tap-event-plugin": "^2.0.1",
+    "redux": "^3.5.2",
+    "underscore": "^1.8.3",
+    "webpack-zepto": "0.0.1",
+    "winston": "^2.3.0"
+  },
+  "devDependencies": {
+    "autoprefixer-loader": "^3.2.0",
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.10.4",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-flow-react-proptypes": "^0.8.0",
+    "babel-plugin-transform-class-properties": "^6.10.2",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-react-hmre": "^1.1.1",
+    "base64-loader": "^1.0.0",
+    "chokidar": "^1.6.0",
+    "css-loader": "^0.23.1",
+    "eslint": "^3.3.1",
+    "eslint-loader": "^1.5.0",
+    "expose-loader": "^0.7.1",
+    "fsevents": "^1.0.14",
+    "install": "^0.8.1",
+    "macro-loader": "^1.0.0",
+    "node-sass": "^3.8.0",
+    "pdfjs-dist": "^1.5.372",
+    "react": "^15.1.0",
+    "react-addons-perf": "^15.1.0",
+    "react-hot-loader": "^1.3.0",
+    "sass-loader": "^4.0.0",
+    "source-map-support": "^0.4.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "homepage": "https://github.com/guitarpoet/web-essentials#readme"
+}
