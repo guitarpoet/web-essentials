@@ -11,7 +11,7 @@ import AppState from "./state"
 import { property, template } from "./core"
 import TickTock from "./core/ticktock"
 import jsyaml from "js-yaml"
-import logger from "winston"
+import logger from "loglevel"
 
 class Application {
     constructor(configUrl, initHandlers = []) {

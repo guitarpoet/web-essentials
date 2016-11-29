@@ -1,6 +1,6 @@
 var path = require("path");
 var webpack = require('webpack');
-var SRC_DIR= path.resolve(__dirname, "src");
+var SRC_DIR= path.resolve(__dirname, "framework");
 var BUILD_DIR = path.resolve(__dirname, "dist/js");
 
 //======================================================================
@@ -68,6 +68,11 @@ var config = {
                 test: /\.css$/, 
                 include : SRC_DIR,
                 loaders: ["style", "css?sourceMap"]
+            },
+            {
+                test : /\.json$/,
+                exclude: /node_modules/,
+                loaders : ["json-loader"]
             },
             {
                 test : /\.jsx$/,
