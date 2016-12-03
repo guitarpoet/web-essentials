@@ -32,7 +32,8 @@ var defines = {
 
 var config = {
     entry:  {
-        "bundle": SRC_DIR + "/index.jsx"
+        "bundle": SRC_DIR + "/index.jsx",
+        "test": SRC_DIR + "/test.jsx"
     },
     devtool: "source-map",
     output: {
