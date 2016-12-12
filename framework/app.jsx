@@ -12,15 +12,27 @@ import { property, template } from "./core"
 import TickTock from "./core/ticktock"
 import jsyaml from "js-yaml"
 import logger from "loglevel"
+import EventSource from "./core/event_source"
+import $ from "webpack-zepto"
+import Bridge from "./bridge"
 
-class Application {
+class Application extends EventSource {
     constructor(configUrl, initHandlers = []) {
+		super();
         this.initHandlers = initHandlers;
         this.services = {};
         this.configUrl = configUrl;
         // Set the application as the global reference
         window.application = this;
     }
+
+	resetCss() {
+		require("./scss/reset.scss");
+	}
+
+	getMode() {
+		return window.parent == window? "direct": "bridge";
+	}
 
     getState(path) {
         let s = this.service("store").getState();
@@ -142,6 +154,18 @@ class Application {
                 for(let h of this.initHandlers) {
                     h(this);
                 }
+
+				if(this.config("style.reset")) {
+					console.info("Adding the reset css");
+					this.resetCss();
+				}
+
+				if(this.getMode() == "bridge") {
+					// If this is bridge mode, let's start the bridge service
+					let bridge = new Bridge();
+					bridge.start();
+					this.service("bridge", bridge);
+				}
                 resolve(this);
             }).catch((error) => {
                 reject(error)
@@ -149,12 +173,36 @@ class Application {
         });
     }
 
+	exec(fn, args = []) {
+		if(this.getMode() == "bridge") {
+			return this.service().bridge.exec(fn, args);
+		}
+		return null;
+	}
+
+	callback(fn, cb, args = []) {
+		if(this.getMode() == "bridge") {
+			return this.service().bridge.callback(fn, callback, args);
+		}
+		return null;
+	}
+
 	title(text) {
 		let t = document.getElementsByTagName("title");
 		if(t.length) {
 			let title = t[0];	
 			if(text) {
+				this.fire("title_changed", {from: title.innerHTML, to: text});
 				title.innerHTML = text;
+				if(this.getMode() == "bridge") {
+					// If run in the bridge mode, let's update bridge's title as well.
+					let bridge = this.service().bridge;
+					if(bridge) {
+						bridge.exec((message) => {
+							$("title").html(message.args);
+						}, text);
+					}
+				}
 			}
 			return title.innerHTML.trim()
 		}

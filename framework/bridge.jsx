@@ -4,6 +4,7 @@ import EventSource from "./core/event_source"
 
 class Bridge extends EventSource {
     constructor() {
+		super();
         this.tasks = {};
         this.callbacks = {};
         this._id = 0;
@@ -20,7 +21,7 @@ class Bridge extends EventSource {
     start() {
 		this.fire("bridge_start", {});
         $(window).on("message", (e) => {
-            let message = JSON.parse(e.data);
+            let message = isString(e.data)? JSON.parse(e.data): e;
 			this.fire("bridge_message", {message});
             if(message.type == "callback") {
                 // This is the callback function
@@ -41,13 +42,14 @@ class Bridge extends EventSource {
     //
     // Eexecute the function that will have a callback support
     //
-    callback(fn, cb) {
-		this.fire("bridge_callback", {func: fn, callback: cb});
+    callback(fn, cb, args = []) {
+		this.fire("bridge_callback", {func: fn, callback: cb, args: args});
         let id = this.currentId(true);
         let message = {
             id: id,
             type: "callback",
-            data: "(" + fn.toString() + ")"
+            data: "(" + fn.toString() + ")",
+			args: args
         }
         // Storing the callback
         this.callbacks[id] = cb;
@@ -57,19 +59,61 @@ class Bridge extends EventSource {
     //
     // Execute the function using cordova's context
     //
-    exec(fn) {
+    exec(fn, args = []) {
 		this.fire("bridge_exec", {func: fn});
         let id = this.currentId(true);
         let message = {
             id: id,
             type: "function",
-            data: "(" + fn.toString() + ")"
+            data: "(" + fn.toString() + ")",
+			args: args
         }
         this.send(message);
         return new Promise((resolve, reject) => {
             this.tasks[id] = {resolve, reject};
         });
     }
+
+	//
+	// Download the uri's content to local file
+	//
+	download(uri, fileName, headers = {}) {
+		return new Promise((resove, reject) => {
+			this.callback((message, service) => {
+				let {uri, fileName, headers} = message.args;
+				let fileTransfer = new FileTransfer();
+				uri = encodeURI(uri);
+				let to = "cdvfile://localhost/root/data/data/" + fileName;
+
+				console.info("Starting the download....", to);
+
+				fileTransfer.download(
+					uri,
+					to,
+					(entry) => {
+						console.info("Download completed..." + entry.toURL());
+						message.result = entry.toURL();
+						service.callback(message);
+					},
+					(error) => {
+						console.info("Download failed..." + error.code + ":" + error.target);
+						message.error = error.code;
+						service.callback(message);
+					},
+					false,
+					{
+						headers: headers
+					}
+				);
+			}, (message) => {
+				if(message.result) {
+					resolve(message.result, message);
+				} else {
+					reject(message);
+				}
+			}, {uri, fileName, headers});
+		});
+	}
 
     close() {
         $(window).off("message");

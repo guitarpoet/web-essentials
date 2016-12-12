@@ -8,6 +8,10 @@ import $ from "webpack-zepto"
 import { isString } from "underscore"
 import Cookie from "oatmeal-cookie"
 
+export const isTop = () => {
+    return window.parent == window;
+}
+
 export const inBrowser = () => {
     if(typeof window !== "undefined") {
         return true;
@@ -132,6 +136,14 @@ export const split = (str, sep = ",") => {
         return str.split(sep);
     }
     return [];
+}
+
+export const bridge = (fn, args = []) => {
+    return application.exec(fn, args);
+}
+
+export const bridge_callback = (fn, args = []) => {
+    return application.callback(fn, cb, args);
 }
 
 export const ajax = axios

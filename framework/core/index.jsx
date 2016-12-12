@@ -13,6 +13,31 @@ import handlebars from "handlebars"
 import df from "date-format"
 import pako from "pako"
 
+export const nextInt = (max = 100, min = 0) => {
+	let number = Math.round((max - min) * Math.random()) + min;
+	if(number > max)
+		return max;
+	return number;
+}
+
+export const doublePrec = (number, prec = 2) => {
+	let times = Math.pow(10, prec);
+	return Math.round(number * times) / times
+}
+
+export const nextDouble = (max = 100, min = 0, prec = 2) => {
+	let number = (max - min) * Math.random() + min;
+
+	if(prec > 0) {
+		let times = Math.pow(10, prec);
+		number = Math.round(number * times) / times
+	}
+
+	if(number > max)
+		number = max;
+	return number;
+}
+
 //
 // Get the class of the object, if this is an object
 //
